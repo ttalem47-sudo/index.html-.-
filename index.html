@@ -22,112 +22,157 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* الصورة الأولى كخلفية أساسية للموقع */
+            /* الصورة الأولى كخلفية ممتدة لكامل الشاشة */
             background: #f4f4f4 url('IMG-20251130-WA0005_edit_253387990920577.jpg') no-repeat center center/cover;
-            transition: background 1s ease-in-out;
+            transition: background 0.8s ease-in-out;
             overflow: hidden;
             position: relative;
         }
 
-        /* الطبقة الشفافة التي تغطي الواجهة بالكامل فوق الصورة لحماية النصوص */
+        /* الطبقة العلوية الشفافة المدمجة لتهدئة ألوان الخلفية ومنع اعتراض اللمس */
         .full-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             z-index: 1;
+            pointer-events: none; /* تضمن مرور النقرات واللمس للحقول بدون أي حجب */
         }
 
-        /* حاوية المحتوى بدون صندوق زجاجي - ممتدة وشفافة تماماً */
+        /* حاوية المحتوى الرئيسية - حيوية وسلسة وممتدة */
         .content-container {
             position: relative;
             z-index: 2;
             width: 90%;
-            max-width: 500px;
+            max-width: 480px;
             text-align: center;
-            padding: 20px;
+            padding: 25px;
             box-sizing: border-box;
         }
 
+        /* حركات التبديل السلسة بين الشاشات */
         .screen {
             display: none;
-            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.5s ease-in-out;
         }
-        .active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .screen.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+            animation: slideUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* تطبيق الخط الأسود العريض مع حدود وظل أبيض قوي لتظهر الكتابة بوضوح ممتاز */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* إجبار الكتابة على اللون الأسود الحاد العريض ومحاطة بلون أبيض ناصع وبارز جداً */
         h2, h3, p, label {
             color: #000000 !important;
-            font-weight: 800 !important;
-            /* تأثير إحاطة النص باللون الأبيض المتوهج */
+            font-weight: 900 !important;
+            margin: 0 0 10px 0;
+            /* تحديد الحواف باللون الأبيض بشكل دائري مكثف ومحكم لقراءة ممتازة */
             text-shadow: 
                 -2px -2px 0 #ffffff,  
                  2px -2px 0 #ffffff,
                 -2px  2px 0 #ffffff,
                  2px  2px 0 #ffffff,
-                 0px  4px 10px rgba(255,255,255,0.9);
+                -1px -2px 0 #ffffff,  
+                 1px -2px 0 #ffffff,
+                -1px  2px 0 #ffffff,
+                 1px  2px 0 #ffffff,
+                -2px -1px 0 #ffffff,  
+                 2px -1px 0 #ffffff,
+                -2px  1px 0 #ffffff,
+                 2px  1px 0 #ffffff,
+                 0px  4px 12px rgba(255,255,255,1);
         }
 
-        h2 { font-size: 28px; margin-bottom: 5px; }
-        h3 { font-size: 24px; margin-top: 0; }
-        p { font-size: 16px; line-height: 1.6; }
+        h2 { font-size: 28px; line-height: 1.3; }
+        h3 { font-size: 24px; }
+        p { font-size: 17px; line-height: 1.5; }
 
-        /* تنسيق الحقول لتكون واضحة ومريحة في الكتابة والقراءة بالخط الأسود */
+        /* تنسيق وتصميم الحقول لتكون حيوية وبارزة وقابلة للكتابة فوراً */
         input, select, textarea {
             width: 100%;
             padding: 15px;
             margin: 12px 0;
             border-radius: 14px;
-            border: 2px solid #000000;
-            background: rgba(255, 255, 255, 0.9);
+            border: 3px solid #000000;
+            background: #ffffff;
             color: #000000;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 17px;
             box-sizing: border-box;
             outline: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
         }
+        
         input::placeholder, textarea::placeholder {
-            color: rgba(0, 0, 0, 0.6);
+            color: rgba(0, 0, 0, 0.55);
         }
+        
         input:focus, select:focus, textarea:focus {
             background: #ffffff;
-            box-shadow: 0 0 15px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.2);
+            border-color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
         }
+        
         select option { color: #000000; background: #ffffff; }
         
-        /* تصميم زر الدخول والإرسال باللون الأسود الملكي والكتابة بالأبيض */
+        /* أزرار تفاعلية فخمة باللون الأسود الملكي */
         button {
             background: #000000;
             color: #ffffff;
-            border: 2px solid #ffffff;
+            border: 3px solid #ffffff;
             padding: 15px 30px;
             border-radius: 14px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 18px;
-            margin-top: 15px;
+            font-weight: 900;
+            font-size: 19px;
+            margin-top: 10px;
             width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        
         button:hover {
-            background: #222222;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            background: #1b1b1b;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
         }
+        
+        button:active {
+            transform: translateY(-1px) scale(1);
+        }
+        
         button:disabled {
-            background: #555555;
+            background: #666666;
             cursor: not-allowed;
+            transform: none;
+        }
+
+        /* تخصيص صندوق عرض الرسالة الترحيبية في الواجهة الثانية */
+        .message-box {
+            text-align: justify; 
+            max-height: 180px; 
+            overflow-y: auto; 
+            padding: 15px; 
+            background: rgba(255, 255, 255, 0.75); 
+            border-radius: 12px; 
+            border: 2px solid #000000;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+            margin: 15px 0;
         }
     </style>
 </head>
@@ -139,9 +184,9 @@
         
         <div id="screen1" class="screen active">
             <h2>مرحباً بك في الكيان الموحد</h2>
-            <p style="margin-bottom: 25px;">سجّل بياناتك للانضمام إلينا</p>
+            <p style="margin-bottom: 20px;">سجّل بياناتك للانضمام إلينا</p>
             
-            <input type="text" id="studentName" placeholder="الاسم الكامل" required>
+            <input type="text" id="studentName" placeholder="الاسم الكامل" required autocomplete="off">
             
             <select id="batch">
                 <option value="" disabled selected>اختر الدفعة</option>
@@ -160,24 +205,27 @@
 
         <div id="screen2" class="screen">
             <h3 id="welcomeTitle">يا هندسة!</h3>
-            <p id="welcomeMessage" style="text-align: justify; max-height: 200px; overflow-y: auto; padding-right: 5px; background: rgba(255,255,255,0.4); padding: 10px; border-radius: 8px;"></p>
+            <div class="message-box">
+                <p id="welcomeMessage" style="text-shadow: none !important; font-size: 15px; font-weight: 700; margin: 0;"></p>
+            </div>
             
-            <hr style="border: 0; border-top: 2px solid #000000; margin: 20px 0;">
+            <hr style="border: 0; border-top: 3px solid #000000; margin: 15px 0;">
             
             <p style="margin-bottom: 5px;">اكتب رسالة لزملائك في الكيان (الخزانة):</p>
-            <textarea id="studentMessage" rows="4" placeholder="عبر عن مشاعرك أو ترحيبك هنا..."></textarea>
+            <textarea id="studentMessage" rows="3" placeholder="عبر عن مشاعرك أو ترحيبك هنا..."></textarea>
             
             <button id="sendBtn" onclick="sendToGmail()">إرسال الرسالة</button>
         </div>
 
         <div id="screen3" class="screen">
-            <div style="font-size: 60px; margin-bottom: 10px; text-shadow: none;">✨</div>
+            <div style="font-size: 65px; margin-bottom: 10px; animation: pulse 1.5s infinite; text-shadow: none;">✨</div>
             <h2>تم الإرسال بنجاح!</h2>
             <p>رسالتك الآن نزلت في الخزانة الحافظة للذكريات. شكرًا لك يا هندسة!</p>
         </div>
     </div>
 
     <script>
+        // مصفوفة النصوص الترحيبية الثابتة والمنسقة هندسياً
         const messages = {
             '23': {
                 'بنت': "أهلاً بكِ يا هندسة في بيتكِ الجديد. نرحب بكِ أجمل ترحيب في رحاب الكيان الموحد، حيث يلتقي الطموح بالإبداع. مرحباً بكِ معنا في كياننا العام، حيث نلتحم اليوم كدفعتين 23 و 24 معاً لنصنع التغيير ونقود المستقبل بروح واحدة. نحن هنا لسنا مجرد زميلات دراسة، بل أسرة واحدة يجمعنا شغف البناء والتطوير. حتماً سيكون بيننا تعاون مثمر ومستمر، نتبادل فيه الخبرات والمعارف لنتجاوز معاً كل التحديات الهندسية والصعاب الأكاديمية. ثقي بأن بصمتكِ في هذه الكلية ستكون مميزة، ومعاً كطالبات هندسة سنثبت أن الإبداع لا حدود له، وأننا قادرات على صياغة النجاح بأيدينا. أهلاً بكِ في رحلة العطاء والتميز تحت سقف واحد.",
@@ -189,7 +237,7 @@
             }
         };
 
-        // أسماء الصور الثلاثة المستعملة للواجهات بالترتيب كما أرسلتها تماماً
+        // أسماء الصور الخلفية للتحويل السلس والمنظم
         const backgrounds = [
             'IMG-20251130-WA0005_edit_253387990920577.jpg',
             'IMG-20251130-WA0012_edit_253406498166039.jpg',
@@ -204,7 +252,7 @@
             gender = document.getElementById('gender').value;
 
             if(!studentName || !batch || !gender) {
-                alert('يا هندسة، الرجاء ملء جميع الحقول أولاً!');
+                alert('يا هندسة، الرجاء ملء جميع الحقول أولاً للكشف عن ترحيبك!');
                 return;
             }
 
@@ -212,21 +260,23 @@
             document.getElementById('welcomeTitle').innerText = title;
             document.getElementById('welcomeMessage').innerText = messages[batch][gender];
 
+            // تحويل سلس وسريع إلى الواجهة الثانية
             document.getElementById('screen1').classList.remove('active');
-            document.getElementById('screen2').classList.add('active');
-            // تغيير صورة الخلفية للواجهة الثانية
-            document.body.style.backgroundImage = `url('${backgrounds[1]}')`;
+            setTimeout(() => {
+                document.getElementById('screen2').classList.add('active');
+                document.body.style.backgroundImage = `url('${backgrounds[1]}')`;
+            }, 100);
         }
 
         function sendToGmail() {
             const messageText = document.getElementById('studentMessage').value.trim();
             if(!messageText) {
-                alert('الرجاء كتابة رسالتك للخزانة أولاً يا هندسة!');
+                alert('الرجاء كتابة رسالتك وحفظها في الخزانة أولاً يا هندسة!');
                 return;
             }
 
             const sendBtn = document.getElementById('sendBtn');
-            sendBtn.innerText = "جاري الحفظ في الخزانة...";
+            sendBtn.innerText = "جاري الإرسال والحفظ بالخزانة...";
             sendBtn.disabled = true;
 
             const templateParams = {
@@ -242,12 +292,13 @@
             emailjs.send(serviceID, templateID, templateParams)
                 .then(function(response) {
                     document.getElementById('screen2').classList.remove('active');
-                    document.getElementById('screen3').classList.add('active');
-                    // تغيير صورة الخلفية للواجهة الثالثة والأخيرة
-                    document.body.style.backgroundImage = `url('${backgrounds[2]}')`;
+                    setTimeout(() => {
+                        document.getElementById('screen3').classList.add('active');
+                        document.body.style.backgroundImage = `url('${backgrounds[2]}')`;
+                    }, 100);
                 }, function(error) {
-                    console.error("فشل الإرسال:", error);
-                    alert("عذراً يا هندسة، حدث خطأ أثناء الإرسال. حاول مرة أخرى.");
+                    console.error("خطأ تقني في الإرسال:", error);
+                    alert("عذراً يا هندسة، حدث خطأ أثناء الاتصال بالسيرفر. حاول مرة أخرى.");
                     sendBtn.innerText = "إرسال الرسالة";
                     sendBtn.disabled = false;
                 });
